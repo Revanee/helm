@@ -55,6 +55,7 @@ func newTemplateCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 	var kubeVersion string
 	var extraAPIs []string
 	var showFiles []string
+	var showNotes bool
 
 	cmd := &cobra.Command{
 		Use:   "template [NAME] [CHART]",
@@ -183,6 +184,11 @@ func newTemplateCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 				} else {
 					fmt.Fprintf(out, "%s", manifests.String())
 				}
+
+				if showNotes {
+					fmt.Fprintf(out, "NOTES:\n%s\n", strings.TrimSpace(rel.Info.Notes))
+				}
+
 			}
 
 			return err
@@ -192,6 +198,7 @@ func newTemplateCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 	f := cmd.Flags()
 	addInstallFlags(cmd, f, client, valueOpts)
 	f.StringArrayVarP(&showFiles, "show-only", "s", []string{}, "only show manifests rendered from the given templates")
+	f.BoolVar(&showNotes, "show-notes", false, "also show rendered NOTES.txt")
 	f.StringVar(&client.OutputDir, "output-dir", "", "writes the executed templates to files in output-dir instead of stdout")
 	f.BoolVar(&validate, "validate", false, "validate your manifests against the Kubernetes cluster you are currently pointing at. This is the same validation performed on an install")
 	f.BoolVar(&includeCrds, "include-crds", false, "include CRDs in the templated output")

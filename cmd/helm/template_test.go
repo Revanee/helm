@@ -109,6 +109,11 @@ func TestTemplateCmd(t *testing.T) {
 			repeat: 10,
 		},
 		{
+			name:   "template with show notes",
+			cmd:    fmt.Sprintf("template '%s' --show-notes", "testdata/testcharts/chart-with-notes"),
+			golden: "output/template-with-notes.txt",
+		},
+		{
 			name:   "sorted output of manifests (order of filenames, then order of objects within each YAML file)",
 			cmd:    fmt.Sprintf("template '%s'", "testdata/testcharts/object-order"),
 			golden: "output/object-order.txt",

@@ -1,0 +1,4 @@
+apiVersion: v2
+description: Chart with notes
+name: chart-with-notes
+version: 0.0.1
